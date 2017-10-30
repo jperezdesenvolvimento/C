@@ -1,0 +1,99 @@
+/*PROGRAMA DESENVOLVIDO PARA FACULDADE ANHANGUERA DE CAMPINAS*/
+/*DESENVOLVIMENTO POR CAROLINA AMORIM - JOSÉ CARLOS PEREZ - PATRICIA IVONE HUBSCHER - RICARDO RODRIGUES*/
+
+#include <allegro.h>
+
+int main() {
+    /*X = ESQUERDA DO QUADRADO QUE MOVIMENTA*/
+    /*X2 = DIREITA DO QUADRADO QUE MOVIMENTA*/
+    /*Y = TOPO DO QUADRADO QUE MOVIMENTA*/
+    /*Y2 = BASE DO QUADRADO QUE MOVIMENTA*/
+    int x=275, y=75, x2=340, y2=140;
+
+    allegro_init(); // INICIANDO O ALLEGRO
+    install_keyboard(); //INSTALANDO O TECLADO
+    set_color_depth(32); //RESOLUÇÃO DA TELA DE 32 BITS
+    set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0); // INSTALANDO O MÓDULO DE VÍDEO
+
+    //CRIA O FUNDO
+    BITMAP *buffer = create_bitmap(640,480);
+    
+    
+    /* Movimentação por setas do teclado: Início */
+    while(!key[KEY_ESC]) { 
+        clear_bitmap(buffer);
+        /*SE APERTAR PARA DIREITA INCREMENTA EM X E X2 1*/
+        if(key[KEY_RIGHT]) {
+             x++;
+             x2++;
+        }
+        /*SE APERTAR PARA ESQUERDA DECREMENTA EM X E X2 1*/
+        if(key[KEY_LEFT]) {
+                   x--;
+                   x2--;
+        }
+        /*SE APERTAR PARA CIMA DECREMENTA EM Y E Y2 1*/
+        if(key[KEY_UP]) {
+                   y--;
+                   y2--;
+        }
+        /*SE APERTAR PARA BAIXO INCREMENTA EM Y E Y2 1*/
+        if(key[KEY_DOWN]) {
+                   y++;
+                   y2++;
+        } 
+        
+        /* Fim da movimentação com Teclado e início das verificações de posicionamento */
+        
+        if((x >= 259) && (x <= 360)) {
+                   if((y2 >= 190) && (y2 <= 354)) {
+                          x++;
+                          x2++;
+                          textout_ex(buffer,font,"COLISÃO DETECTADA",250,1,makecol(255,255,0),-1);
+                   }
+        }
+        if((x2 >= 259) && (x2 <= 360)) {
+                   if((y >= 125) && (y <= 285)) {
+                         x--;
+                         x2--;
+                         textout_ex(buffer,font,"COLISÃO DETECTADA",250,1,makecol(255,255,0),-1);
+                   }
+        }
+        if((y >= 190) && (y <= 290)) {
+                   if((x >= 194) && (x <= 359)) {
+                         y++;
+                         y2++;
+                         textout_ex(buffer,font,"COLISÃO DETECTADA",250,1,makecol(255,255,0),-1);
+                   }
+        }
+        if((y2 >= 190) && (y2 <= 290)) {
+                    if((x >= 196) && (x <= 359)) {
+                          y--;
+                          y2--;
+                          textout_ex(buffer,font,"COLISÃO DETECTADA",250,1,makecol(255,255,0),-1);
+                    }
+        }
+        //RETÂNGULO QUE MOVIMENTA 
+        rectfill(buffer,x,y,x2,y2,makecol(208,44,214));
+        //circlefill(buffer, x, y, 10, makecol(208,44,214));
+        
+        //RETÂNGULO CENTRAL -> ESTÁTICO        
+        rectfill(buffer,260,190,360,290,makecol(255,0,0));
+        
+        
+        //BUFFER É O BITMAP DE ORIGEM
+        //SCREEN É O BITMAP DE DESTINO
+        //X DO BUFFER
+        //Y DO BUFFER
+        //X DO SCREEN
+        //Y DO SCREEN
+        //LARGURA DO SCREEN
+        //ALTURA DO SCREEN
+        blit(buffer,screen,0,0,0,0,640,480);
+
+        //LEITURA DO TECLADO
+        readkey();
+    }
+    return 0;
+ }
+ END_OF_MAIN()
