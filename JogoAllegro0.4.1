@@ -1,0 +1,86 @@
+#include <allegro.h>
+#include <stdio.h>
+
+void jogo(){
+        int tamquad = 20;
+    int x=560, y=445, x2=x+tamquad, y2=y+tamquad;
+
+    allegro_init();
+    install_keyboard();
+    set_color_depth(32);
+    set_gfx_mode(GFX_AUTODETECT_WINDOWED,640,480,0,0);
+    set_window_title("JOGO");
+
+    BITMAP *buffer = create_bitmap(640,480);
+    int color, corInicial;
+    int qntdeBatidas = 0;
+    BITMAP *fundo;
+
+    fundo = load_bitmap("D:\\labirinto.bmp", NULL);
+
+    while(!key[KEY_ESC]) { 
+        clear_bitmap(buffer);
+        corInicial = getpixel(fundo, x, y);
+        textprintf(fundo, font, 12, 10, makecol(100,255,125),"Quantidade de batidas: %d", qntdeBatidas);
+
+        if(key[KEY_RIGHT]){
+             if(getpixel(fundo, x2+1, y)==corInicial && getpixel(fundo, x2+1, y2)==corInicial){
+                      x ++;
+                      x2 ++;
+             }
+             else
+             {
+                 qntdeBatidas++;
+             }
+        }
+
+        if(key[KEY_LEFT]) {
+               if(getpixel(fundo, x-1, y)==corInicial && getpixel(fundo, x-1, y2)==corInicial){
+                       x --;
+                       x2 --;
+              }else
+             {
+                 qntdeBatidas++;
+             }
+        }
+
+        if(key[KEY_UP]) {
+               if(getpixel(fundo, x, y-1)==corInicial && getpixel(fundo, x2, y-1)==corInicial){
+                       y --;
+                       y2 --;
+               }else
+             {
+                 qntdeBatidas++;
+             }
+        }
+
+        if(key[KEY_DOWN]) {
+                if(getpixel(fundo, x, y2+1)==corInicial && getpixel(fundo, x2, y2+1)==corInicial){
+                       y ++;
+                       y2 ++;
+                }else
+             {
+                 qntdeBatidas++;
+             }
+        } 
+        draw_sprite(buffer, fundo,0 ,0  );
+        rectfill(buffer,x,y,x2,y2,makecol(208,44,214));
+
+        blit(buffer,screen,0,0,0,0,640,480);
+
+        readkey();
+    }}
+int main() {
+        BITMAP *fundo;
+
+    fundo = load_bitmap("D:\\labirinto.bmp", NULL);
+    char nome[50];
+    printf ("Digite seu nome: ");
+    scanf ("Nome:", &nome);
+    jogo();
+
+    return 0;
+ }
+ END_OF_MAIN()
+
+
